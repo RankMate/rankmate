@@ -158,7 +158,8 @@ const ProfileCard = ({ data, valRoles }) => {
   );
 };
 
-export default function RankMateDashboard() {
+export default function RankMateDashboard({ session }) {
+  const user = session?.user;
   const avatarInputRef = useRef(null);
   const bannerInputRef = useRef(null);
   const searchContainerRef = useRef(null);
@@ -200,6 +201,31 @@ export default function RankMateDashboard() {
   const [connFilterRole, setConnFilterRole] = useState('All');
 
   const activeStatusColor = STATUS_OPTIONS.find(s => s.id === status)?.color || 'bg-green-500';
+
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchProfile = async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (data && !error) {
+        setGame(data.game || 'Valorant');
+        setGamertag(data.gamertag || '');
+        setDescription(data.description || '');
+        setAvatar(data.avatar_url || ''); 
+        setBanner(data.banner_url || ''); 
+        setRank(data.rank || GAME_DATA[data.game || 'Valorant'].ranks[0].name);
+        setRole(data.role || GAME_DATA[data.game || 'Valorant'].roles[0].name);
+        setSelectedMains(data.mains || []);
+      }
+    };
+
+    fetchProfile();
+  }, [user]);
 
   useEffect(() => {
     fetch('https://valorant-api.com/v1/agents?isPlayableCharacter=true')
@@ -277,9 +303,32 @@ export default function RankMateDashboard() {
     }
   };
 
-  const handleSave = () => {
-    setShowSaved(true);
-    setTimeout(() => setShowSaved(false), 3000);
+  const handleSave = async () => {
+    if (!user) return;
+
+    const profileData = {
+      id: user.id,
+      updated_at: new Date().toISOString(),
+      game: game,
+      gamertag: gamertag,
+      description: description,
+      avatar_url: avatar, 
+      banner_url: banner, 
+      rank: rank,
+      role: role,
+      mains: selectedMains,
+    };
+
+    const { error } = await supabase
+      .from('profiles')
+      .upsert(profileData);
+
+    if (error) {
+      alert('Error saving profile: ' + error.message);
+    } else {
+      setShowSaved(true);
+      setTimeout(() => setShowSaved(false), 3000);
+    }
   };
 
   const toggleMainCharacter = (char) => {
