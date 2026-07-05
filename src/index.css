@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #000000;
+}
+
+.font-gaming { font-family: 'Chakra Petch', sans-serif; }
+.font-ui { font-family: 'Inter', sans-serif; }
+
+.custom-scroll::-webkit-scrollbar { width: 6px; }
+.custom-scroll::-webkit-scrollbar-track { background: #000; }
+.custom-scroll::-webkit-scrollbar-thumb { background: #27272a; }
+.custom-scroll::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+@keyframes expandChat {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes avatarSlideLeft {
+  0% { transform: translateX(-150px) scale(0.5); opacity: 0; }
+  15% { transform: translateX(20px) scale(1.05); opacity: 1; }
+  25% { transform: translateX(0) scale(1); opacity: 1; }
+  85% { transform: translateX(0) scale(1); opacity: 1; }
+  100% { transform: translateX(-20px) scale(0.9); opacity: 0; }
+}
+
+@keyframes avatarSlideRight {
+  0% { transform: translateX(150px) scale(0.5); opacity: 0; }
+  15% { transform: translateX(-20px) scale(1.05); opacity: 1; }
+  25% { transform: translateX(0) scale(1); opacity: 1; }
+  85% { transform: translateX(0) scale(1); opacity: 1; }
+  100% { transform: translateX(20px) scale(0.9); opacity: 0; }
+}
+
+@keyframes dotWave {
+  0%, 100% { transform: scale(1); opacity: 0.3; background-color: #71717a; }
+  50% { transform: scale(2); opacity: 1; background-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.8); }
+}
+
+@keyframes containerFade {
+  0%, 85% { opacity: 1; backdrop-filter: blur(12px); }
+  100% { opacity: 0; backdrop-filter: blur(0px); }
+}
+
+@keyframes checkPop {
+  0%, 60% { opacity: 0; transform: scale(0); }
+  65% { opacity: 1; transform: scale(1.2); }
+  70%, 85% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+@keyframes waveFadeOut {
+  0%, 55% { opacity: 1; transform: scale(1); }
+  60%, 100% { opacity: 0; transform: scale(0.5); }
+}
+
+.animate-expandChat { animation: expandChat 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-wave { animation: dotWave 0.9s ease-in-out infinite; }
+.animate-checkPop { animation: checkPop 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-waveFadeOut { animation: waveFadeOut 2.5s ease-in-out forwards; }
+.animate-slideLeft { animation: avatarSlideLeft 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-slideRight { animation: avatarSlideRight 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-containerFade { animation: containerFade 2.5s ease-in-out forwards; }
